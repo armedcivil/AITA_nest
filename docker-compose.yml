@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app:
+    build: './doc/docker/app'
+    container_name: aita_nest_app
+    volumes:
+      - ./:/var/www
+    ports:
+      - 3000:3000
+      - 3001:3001
+    networks:
+      - aita-network
+  db:
+    image: mysql:5.7
+    container_name: aita_nest_db
+    environment:
+      MYSQL_ROOT_PASSWORD: hseinoroot
+      MYSQL_DATABASE: aita
+      MYSQL_USER: aita
+      MYSQL_PASSWORD: aitapassword
+      TZ: 'Asia/Tokyo'
+    restart: always
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./doc/docker/db/data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      - aita-network
+networks:
+  aita-network:
+    external: true
