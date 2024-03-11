@@ -1,29 +1,43 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AdminService } from '../admin/admin.service';
-import { Admin } from '../admin/admin.entity';
+import { EntityTarget, DataSource } from 'typeorm';
 import { compare } from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, TokenExpiredError } from '@nestjs/jwt';
+import { Account } from 'src/account.entity';
 
-export type JwtPayload = { id: number; name: string; email: string };
+export type JwtPayload = {
+  id: number;
+  name: string;
+  email: string;
+  roles: string[];
+};
 
 @Injectable()
 export class AuthService {
   constructor(
-    private adminService: AdminService,
     private jwtService: JwtService,
+    private dataSource: DataSource,
   ) {}
 
-  async signIn(
+  async signIn<T extends Account>(
     email: string,
     password: string,
+    entityType: EntityTarget<T>,
+    roles: string[],
   ): Promise<{ accessToken: string }> {
-    const admin: Admin = await this.adminService.findByEmail(email);
+    const queryBuider = this.dataSource
+      .getRepository(entityType)
+      .createQueryBuilder();
+    const account: T = await queryBuider
+      .select()
+      .where({ email: email })
+      .getOne();
 
-    if (await compare(password, admin.password)) {
+    if (await compare(password, account.password)) {
       const payload: JwtPayload = {
-        id: admin.id,
-        name: admin.name,
-        email: admin.email,
+        id: account.id,
+        name: account.name,
+        email: account.email,
+        roles: roles,
       };
       return { accessToken: this.jwtService.sign(payload) };
     }
@@ -32,6 +46,12 @@ export class AuthService {
   }
 
   checkAuth(accessToken: string): JwtPayload {
-    return this.jwtService.verify(accessToken);
+    try {
+      return this.jwtService.verify(accessToken);
+    } catch (e: any) {
+      if (e instanceof TokenExpiredError) {
+        throw new UnauthorizedException();
+      }
+    }
   }
 }
