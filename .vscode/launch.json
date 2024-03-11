@@ -14,6 +14,20 @@
       "cwd": "${workspaceRoot}",
       "console": "integratedTerminal",
       "protocol": "inspector"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Seed",
+      "runtimeArgs": ["ts-node", "seed.ts"],
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/dist/main.js",
+      "runtimeExecutable": "npx",
+      "sourceMaps": true,
+      "envFile": "${workspaceFolder}/.env.debug",
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal",
+      "protocol": "inspector"
     }
   ]
 }
