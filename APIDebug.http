@@ -1,4 +1,10 @@
-POST http://localhost:3001/auth/login HTTP/1.1
+@adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwMjYxMzc1LCJleHAiOjE3MTAyNjg1NzV9.qM8tv1NsuVWUwOODs2df46claoPdkphP-ZjvRHp826Q
+@companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxIiwiZW1haWwiOiJjb21wYW55MUBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEwMjYxMzkzLCJleHAiOjE3MTAyNjg1OTN9.Pft2dFmYdwMnk0yS6YmnFoZHKqGm5pwpYdpkgXxMBWU
+@userAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxdXNlcjEiLCJlbWFpbCI6ImNvbXBhbnkxdXNlcjFAZXhhbXBsZS5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMDI2MTQxOCwiZXhwIjoxNzEwMjY4NjE4fQ.RQacTi7_w-9oV7X-jkcpshZzBrmeKZgpOwGO7_gqXAc
+
+###
+
+POST http://localhost:3001/auth/admin/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -7,3 +13,80 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:3001/auth/company/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "company1@example.com",
+  "password": "password"
+}
+
+###
+
+POST http://localhost:3001/auth/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "company1user1@example.com",
+  "password": "password"
+}
+
+###
+
+GET http://localhost:3001/company/?page=3 HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{adminAccessToken}}
+
+###
+
+GET http://localhost:3001/company/41 HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{adminAccessToken}}
+
+###
+
+POST http://localhost:3001/company
+Content-Type: application/json
+Authorization: Bearer {{adminAccessToken}}
+
+{
+  "name": "comapny80",
+  "email": "company80@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}
+
+###
+
+PATCH http://localhost:3001/company/41
+Content-Type: application/json
+Authorization: Bearer {{adminAccessToken}}
+
+{
+  "name": "company80",
+  "email": "company80@example.com"
+}
+
+###
+
+DELETE  http://localhost:3001/company/41
+Content-Type: application/json
+Authorization: Bearer {{adminAccessToken}}
+
+###
+
+GET http://localhost:3001/company/profile HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{companyAccessToken}}
+
+###
+
+PATCH http://localhost:3001/company/profile HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{companyAccessToken}}
+
+{
+  "name": "company1",
+  "email": "company1@example.com"
+}

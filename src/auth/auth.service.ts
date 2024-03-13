@@ -3,6 +3,7 @@ import { EntityTarget, DataSource } from 'typeorm';
 import { compare } from 'bcrypt';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Account } from 'src/account.entity';
+import { Request } from 'express';
 
 export type JwtPayload = {
   id: number;
@@ -53,5 +54,10 @@ export class AuthService {
         throw new UnauthorizedException();
       }
     }
+  }
+
+  extractTokenFromHeader(authorization: string): string | undefined {
+    const [type, token] = authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }

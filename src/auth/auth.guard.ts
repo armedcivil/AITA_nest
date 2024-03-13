@@ -23,7 +23,9 @@ export class AuthGuard implements CanActivate {
     const request: Request = context.switchToHttp().getRequest();
     const checkAuth = this.reflector.get('auth', context.getHandler());
     if (checkAuth) {
-      const accessToken = this.extractTokenFromHeader(request);
+      const accessToken = this.authService.extractTokenFromHeader(
+        request.headers.authorization,
+      );
       if (accessToken) {
         const jwtPayload: JwtPayload = this.authService.checkAuth(accessToken);
         const roles: string[] = this.reflector.get(
@@ -43,11 +45,6 @@ export class AuthGuard implements CanActivate {
     } else {
       return true;
     }
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 
   private matchRoles(roles: string[], accountRoles: string[]) {

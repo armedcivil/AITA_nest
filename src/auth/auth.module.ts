@@ -10,7 +10,7 @@ import { AdminModule } from '../admin/admin.module';
       secret: process.env.JWT_SECRET,
       publicKey: process.env.JWT_PUBLIC,
       privateKey: process.env.JWT_PRIVATE,
-      signOptions: { expiresIn: '5m' },
+      signOptions: { expiresIn: '2h' },
     }),
     AdminModule,
   ],
