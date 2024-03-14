@@ -1,10 +1,11 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
-import { Request } from 'express';
-import { AuthService, JwtPayload } from './auth.service';
+import { Controller, Post, Body, Get } from '@nestjs/common';
+import { AuthService } from './auth.service';
 import { AuthDto } from './auth.dto';
 import { Admin } from 'src/admin/admin.entity';
 import { Company } from 'src/company/company.entity';
 import { User } from 'src/user/user.entity';
+import { Auth } from './auth.decorator';
+import { Role } from 'src/role/role.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -38,5 +39,12 @@ export class AuthController {
       User,
       ['user'],
     );
+  }
+
+  @Get('/check')
+  @Auth()
+  @Role(['admin', 'company', 'user'])
+  async check() {
+    return { check: true };
   }
 }

@@ -1,4 +1,4 @@
-@adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwMjYxMzc1LCJleHAiOjE3MTAyNjg1NzV9.qM8tv1NsuVWUwOODs2df46claoPdkphP-ZjvRHp826Q
+@adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwNDUxODAxLCJleHAiOjE3MTA0NTkwMDF9.T9Z-IuRVXgdIu6SWUqpUWsePfcDIEqefCLinzd_yPXo
 @companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxIiwiZW1haWwiOiJjb21wYW55MUBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEwMjYxMzkzLCJleHAiOjE3MTAyNjg1OTN9.Pft2dFmYdwMnk0yS6YmnFoZHKqGm5pwpYdpkgXxMBWU
 @userAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxdXNlcjEiLCJlbWFpbCI6ImNvbXBhbnkxdXNlcjFAZXhhbXBsZS5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMDI2MTQxOCwiZXhwIjoxNzEwMjY4NjE4fQ.RQacTi7_w-9oV7X-jkcpshZzBrmeKZgpOwGO7_gqXAc
 
@@ -31,6 +31,12 @@ Content-Type: application/json
   "email": "company1user1@example.com",
   "password": "password"
 }
+
+###
+
+GET http://localhost:3001/auth/check HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{adminAccessToken}}
 
 ###
 
