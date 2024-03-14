@@ -33,6 +33,10 @@ export class AuthService {
       .where({ email: email })
       .getOne();
 
+    if (!account) {
+      throw new UnauthorizedException();
+    }
+
     if (await compare(password, account.password)) {
       const payload: JwtPayload = {
         id: account.id,
