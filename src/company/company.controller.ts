@@ -8,25 +8,24 @@ import {
   Body,
   Patch,
   Delete,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { Auth } from '../auth/auth.decorator';
 import { Role } from '../role/role.decorator';
 import { CompanyService, CompanyPager } from './company.service';
 import { Company } from './company.entity';
-import { AuthService, JwtPayload } from '../auth/auth.service';
 import { CreateCompanyDto } from './company-create.dto';
 import { UpdateCompanyDto } from './company-update.dto';
 
 @Controller('company')
 export class CompanyController {
-  constructor(
-    private companyService: CompanyService,
-    private authService: AuthService,
-  ) {}
+  constructor(private companyService: CompanyService) {}
 
   @Get()
   @Auth()
   @Role(['admin'])
+  @UseInterceptors(ClassSerializerInterceptor)
   async index(@Query('page') page: string = '1'): Promise<CompanyPager> {
     return await this.companyService.all(parseInt(page));
   }
