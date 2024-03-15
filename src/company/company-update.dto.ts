@@ -9,9 +9,9 @@ export class UpdateCompanyDto {
   email?: string;
 
   @MinLength(8)
-  @Pair('password_confirmation')
-  @IsConfirmed('password_confirmation')
+  @Pair('passwordConfirmation')
+  @IsConfirmed('passwordConfirmation')
   password?: string;
 
-  password_confirmation?: string;
+  passwordConfirmation?: string;
 }

@@ -73,7 +73,7 @@ Authorization: Bearer {{adminAccessToken}}
   "name": "company1",
   "email": "company1@example.com",
   "password": "password",
-  "password_confirmation": "password"
+  "passwordConfirmation": "password"
 }
 
 ###

@@ -58,7 +58,7 @@ export class CompanyService {
     const data = { ...dto };
     if (data.password) {
       data.password = await hash(data.password, 10);
-      delete data.password_confirmation;
+      delete data.passwordConfirmation;
     }
     return await Company.getRepository().update(id, data);
   }
