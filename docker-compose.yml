@@ -5,6 +5,7 @@ services:
     container_name: aita_nest_app
     volumes:
       - ./:/var/www
+      - aita-nest-volumes:/var/www/node_modules
     ports:
       - 3000:3000
       - 3001:3001
@@ -32,3 +33,5 @@ services:
 networks:
   aita-network:
     external: true
+volumes:
+  aita-nest-volumes:
