@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Req,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { Auth } from 'src/auth/auth.decorator';
 import { Role } from 'src/role/role.decorator';
@@ -23,7 +24,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService, JwtPayload } from 'src/auth/auth.service';
 import { Request } from 'express';
 
-// TODO : Remove password from response by attach @UseInterceptors(ClassSerializerInterceptor)
 // TODO : Treat uploaded file on create and update
 
 @Controller('user')
@@ -36,6 +36,7 @@ export class UserController {
   @Get()
   @Auth()
   @Role(['company'])
+  @UseInterceptors(ClassSerializerInterceptor)
   async index(
     @Req() req: Request,
     @Query('page') page: string = '1',
@@ -50,6 +51,7 @@ export class UserController {
   @Get('/:id')
   @Auth()
   @Role(['company'])
+  @UseInterceptors(ClassSerializerInterceptor)
   async show(@Req() req: Request, @Param('id') id: string): Promise<User> {
     try {
       const token: string = await this.authService.extractTokenFromHeader(
@@ -68,6 +70,7 @@ export class UserController {
   @Post()
   @Auth()
   @Role(['company'])
+  @UseInterceptors(ClassSerializerInterceptor)
   @UseInterceptors(FileInterceptor('icon'))
   async create(
     @Req() req: Request,
