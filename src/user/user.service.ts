@@ -4,6 +4,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 import { hash } from 'bcrypt';
 import { CreateUserDto } from './user-create.dto';
 import { UpdateUserDto } from './user-update.dto';
+import { Company } from 'src/company/company.entity';
 
 export type UserPager = {
   total: number;
@@ -18,14 +19,24 @@ export type UserPager = {
 export class UserService {
   constructor() {}
 
-  async all(page: number, limit: number = 10): Promise<UserPager> {
+  async all(
+    page: number,
+    limit: number = 10,
+    companyId?: number | bigint,
+  ): Promise<UserPager> {
     const queryBuider = User.createQueryBuilder();
-    const companies: User[] = await queryBuider
+
+    const query = queryBuider
       .select()
       .addOrderBy('id')
       .offset((page - 1) * limit)
-      .limit(limit)
-      .getMany();
+      .limit(limit);
+
+    if (companyId) {
+      query.where('company_id = :companyId', { companyId });
+    }
+
+    const companies: User[] = await query.getMany();
 
     const total = await User.count();
 
@@ -41,20 +52,39 @@ export class UserService {
     };
   }
 
-  async find(id: number): Promise<User> {
-    const company: User = await User.getRepository().findOne({
-      where: { id: id },
-    });
+  async find(id: number, companyId?: number | bigint): Promise<User> {
+    const query = User.createQueryBuilder().select().where('id = :id', { id });
+
+    if (companyId) {
+      query.andWhere('company_id = :companyId', { companyId });
+    }
+
+    const company: User = await query.getOne();
     return company;
   }
 
-  async create(dto: CreateUserDto): Promise<User> {
+  async create(dto: CreateUserDto, companyId: number | bigint): Promise<User> {
     const data = { ...dto };
     data.password = await hash(data.password, 10);
-    return await User.getRepository().create(data).save();
+
+    const company = await Company.findOne({ where: { id: Number(companyId) } });
+
+    const user = new User();
+    user.name = data.name;
+    user.email = data.email;
+    user.password = data.password;
+    user.company = company;
+
+    const savedUser = await user.save();
+
+    return Promise.resolve(savedUser);
   }
 
-  async update(id: number, dto: UpdateUserDto): Promise<UpdateResult> {
+  async update(
+    id: number,
+    dto: UpdateUserDto,
+    companyId?: number | bigint,
+  ): Promise<UpdateResult> {
     const data = { ...dto };
     if (data.password) {
       data.password = await hash(data.password, 10);
@@ -63,7 +93,7 @@ export class UserService {
     return await User.getRepository().update(id, data);
   }
 
-  async delete(id: number): Promise<DeleteResult> {
+  async delete(id: number, companyId?: number | bigint): Promise<DeleteResult> {
     return await User.getRepository().delete(id);
   }
 

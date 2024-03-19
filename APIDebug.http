@@ -1,5 +1,5 @@
-@adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwNTQ4MzQzLCJleHAiOjE3MTA1NTU1NDN9.3a18i7zEZZX9YnqgZGl2gY2FWh0QigPoPRkKBo-X1cA
-@companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxIiwiZW1haWwiOiJjb21wYW55MUBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEwMjYxMzkzLCJleHAiOjE3MTAyNjg1OTN9.Pft2dFmYdwMnk0yS6YmnFoZHKqGm5pwpYdpkgXxMBWU
+@adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwODAzMjcxLCJleHAiOjE3MTA4MTA0NzF9.jAO-sHCRk2kkKnmU51kdgOSC19CRGs8stYflXY7OVpQ
+@companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6ImNvbXBhbnk0IiwiZW1haWwiOiJjb21wYW55NEBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEwODcxNzIzLCJleHAiOjE3MTA4Nzg5MjN9.v9ElOk-C4AivhveLydDj3DHbfG1YtsEAL5Uya3kl3m0
 @userAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxdXNlcjEiLCJlbWFpbCI6ImNvbXBhbnkxdXNlcjFAZXhhbXBsZS5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMDI2MTQxOCwiZXhwIjoxNzEwMjY4NjE4fQ.RQacTi7_w-9oV7X-jkcpshZzBrmeKZgpOwGO7_gqXAc
 
 ###
@@ -18,7 +18,7 @@ POST http://localhost:3001/auth/company/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "company1@example.com",
+  "email": "company4@example.com",
   "password": "password"
 }
 
@@ -98,4 +98,29 @@ Authorization: Bearer {{companyAccessToken}}
 {
   "name": "company1",
   "email": "company1@example.com"
+}
+
+###
+
+GET http://localhost:3001/user?page=4 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{companyAccessToken}}
+
+###
+
+GET http://localhost:3001/user/121 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{companyAccessToken}}
+
+###
+
+POST http://localhost:3001/user HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{companyAccessToken}}
+
+{
+  "name": "comapny4user41",
+  "email": "comapny4user41@example.com",
+  "password": "password",
+  "password_confirmation": "password"
 }
