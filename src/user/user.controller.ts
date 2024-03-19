@@ -23,6 +23,8 @@ import { CreateUserDto } from './user-create.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService, JwtPayload } from 'src/auth/auth.service';
 import { Request } from 'express';
+import { createWriteStream } from 'fs';
+import { join } from 'path';
 
 // TODO : Treat uploaded file on create and update
 
@@ -81,7 +83,24 @@ export class UserController {
       req.headers.authorization,
     );
     const payload: JwtPayload = await this.authService.checkAuth(token);
-    return await this.userService.create(dto, payload.id);
+
+    let iconImagePath: string | undefined = undefined;
+
+    if (file.size > 0) {
+      iconImagePath = join(
+        'uploaded',
+        `img_${payload.id}_${new Date().getTime()}.png`,
+      );
+      const writeStream = createWriteStream(
+        join(__dirname, '..', '..', '..', 'public', iconImagePath),
+      );
+      writeStream.write(file.buffer, (e) => {
+        console.log(e);
+      });
+      writeStream.close();
+    }
+
+    return await this.userService.create(dto, payload.id, iconImagePath);
   }
 
   @Patch('/:id')
@@ -89,11 +108,37 @@ export class UserController {
   @Role(['company'])
   @UseInterceptors(FileInterceptor('icon'))
   async update(
+    @Req() req: Request,
     @Param('id') id: string,
     @UploadedFile() file,
     @Body() dto: UpdateUserDto,
   ): Promise<{ result: string }> {
-    const updateResult = await this.userService.update(parseInt(id), dto);
+    const token: string = await this.authService.extractTokenFromHeader(
+      req.headers.authorization,
+    );
+    const payload: JwtPayload = await this.authService.checkAuth(token);
+
+    let iconImagePath: string | undefined = undefined;
+
+    if (file.size > 0) {
+      iconImagePath = join(
+        'uploaded',
+        `img_${payload.id}_${new Date().getTime()}.png`,
+      );
+      const writeStream = createWriteStream(
+        join(__dirname, '..', '..', '..', 'public', iconImagePath),
+      );
+      writeStream.write(file.buffer, (e) => {
+        console.log(e);
+      });
+      writeStream.close();
+    }
+
+    const updateResult = await this.userService.update(
+      parseInt(id),
+      dto,
+      iconImagePath,
+    );
     const result = { result: 'success' };
     if (!updateResult.affected) {
       result.result = 'failed';

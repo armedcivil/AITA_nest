@@ -63,7 +63,11 @@ export class UserService {
     return company;
   }
 
-  async create(dto: CreateUserDto, companyId: number | bigint): Promise<User> {
+  async create(
+    dto: CreateUserDto,
+    companyId: number | bigint,
+    iconImagePath?: string,
+  ): Promise<User> {
     const data = { ...dto };
     data.password = await hash(data.password, 10);
 
@@ -73,6 +77,11 @@ export class UserService {
     user.name = data.name;
     user.email = data.email;
     user.password = data.password;
+
+    if (iconImagePath) {
+      user.iconImagePath = iconImagePath;
+    }
+
     user.company = company;
 
     const savedUser = await user.save();
@@ -83,12 +92,15 @@ export class UserService {
   async update(
     id: number,
     dto: UpdateUserDto,
-    companyId?: number | bigint,
+    iconImagePath?: string,
   ): Promise<UpdateResult> {
-    const data = { ...dto };
+    let data: UpdateUserDto | { iconImagePath?: string } = { ...dto };
     if (data.password) {
       data.password = await hash(data.password, 10);
       delete data.passwordConfirmation;
+    }
+    if (iconImagePath) {
+      data = { ...data, iconImagePath };
     }
     return await User.getRepository().update(id, data);
   }
