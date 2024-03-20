@@ -23,7 +23,7 @@ import { CreateUserDto } from './user-create.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService, JwtPayload } from 'src/auth/auth.service';
 import { Request } from 'express';
-import { createWriteStream } from 'fs';
+import { createWriteStream, rm } from 'fs';
 import { join } from 'path';
 
 // TODO : Treat uploaded file on create and update
@@ -150,6 +150,15 @@ export class UserController {
   @Auth()
   @Role(['company'])
   async delete(@Param('id') id: string): Promise<{ result: string }> {
+    const user = await this.userService.find(parseInt(id));
+    const iconImagePath = user.iconImagePath;
+    if (iconImagePath) {
+      await rm(
+        join(__dirname, '..', '..', '..', 'public', iconImagePath),
+        () => {},
+      );
+    }
+
     const deleteResult = await this.userService.delete(parseInt(id));
     const result = { result: 'success' };
     if (!deleteResult.affected) {
