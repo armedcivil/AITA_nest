@@ -11,6 +11,9 @@ import { CompanyModule } from './company/company.module';
 import { CompanyProfileModule } from './company-profile/company-profile.module';
 import { UserModule } from './user/user.module';
 import { UserProfileModule } from './user-profile/user-profile.module';
+import { CompanyFloorController } from './company-floor/company-floor.controller';
+import { FloorService } from './floor/floor.service';
+import { CompanyFloorModule } from './company-floor/company-floor.module';
 
 @Module({
   imports: [
@@ -21,8 +24,9 @@ import { UserProfileModule } from './user-profile/user-profile.module';
     CompanyModule,
     UserProfileModule,
     UserModule,
+    CompanyFloorModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }],
+  controllers: [AppController, CompanyFloorController],
+  providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }, FloorService],
 })
 export class AppModule {}

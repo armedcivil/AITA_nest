@@ -1,5 +1,5 @@
 @adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwODAzMjcxLCJleHAiOjE3MTA4MTA0NzF9.jAO-sHCRk2kkKnmU51kdgOSC19CRGs8stYflXY7OVpQ
-@companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6ImNvbXBhbnk0IiwiZW1haWwiOiJjb21wYW55NEBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEwODc5NTMwLCJleHAiOjE3MTA4ODY3MzB9.lazi-5M3bA1UwHUZFRW86IpvvSfLVmuhq-3dAMOcqcI
+@companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6ImNvbXBhbnk0IiwiZW1haWwiOiJjb21wYW55NEBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEyMTI3MTA5LCJleHAiOjE3MTIxMzQzMDl9.nvaaTKsttUHjT_ssmmUCKus3PHHVai35NLFdB7GXa94
 @userAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxdXNlcjEiLCJlbWFpbCI6ImNvbXBhbnkxdXNlcjFAZXhhbXBsZS5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMDI2MTQxOCwiZXhwIjoxNzEwMjY4NjE4fQ.RQacTi7_w-9oV7X-jkcpshZzBrmeKZgpOwGO7_gqXAc
 
 ###
@@ -123,4 +123,30 @@ Authorization: Bearer {{companyAccessToken}}
   "email": "comapny4user42@example.com",
   "password": "password",
   "passwordConfirmation": "password"
+}
+
+###
+
+GET http://localhost:3001/company/floor HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{companyAccessToken}}
+
+###
+
+POST http://localhost:3001/company/floor HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{companyAccessToken}}
+
+{
+  "floors": [
+    {
+      "label" : "国王軍第３騎士団第１兵舎",
+      "objects":[{"modelPath":"/models/circle-desk.glb","matrix":{"elements":[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}},{"modelPath":"/models/chair.glb","matrix":{"elements":[0.021115678037200603,0,0.9997770392147588,0,0,1,0,0,-0.9997770392147588,0,0.021115678037200603,0,1.9005579413072422,0,-0.004496067233618284,1]}}]
+    },
+
+    {
+      "label" : "国王軍第３騎士団第２兵舎",
+      "objects":[{"modelPath":"/models/circle-desk.glb","matrix":{"elements":[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}},{"modelPath":"/models/chair.glb","matrix":{"elements":[0.021115678037200603,0,0.9997770392147588,0,0,1,0,0,-0.9997770392147588,0,0.021115678037200603,0,1.9005579413072422,0,-0.004496067233618284,1]}}]
+    }
+  ]
 }

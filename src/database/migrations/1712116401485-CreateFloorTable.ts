@@ -20,6 +20,7 @@ export class CreateFloorTable1712116401485 implements MigrationInterface {
           {
             name: 'company_id',
             type: 'bigint',
+            isUnique: true,
           },
         ],
       }),
