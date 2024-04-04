@@ -9,7 +9,11 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useGlobalPipes(new ValidationPipe({ skipMissingProperties: true }));
-  app.useStaticAssets(join(__dirname, '..', '..', 'public'));
+  app.useStaticAssets(join(__dirname, '..', '..', 'public'), {
+    setHeaders: (res, path, stat) => {
+      res.set('Access-Control-Allow-Origin', '*');
+    },
+  });
   app.enableCors({
     origin: ['http://localhost:4200', 'http://localhost:4201'],
   });
