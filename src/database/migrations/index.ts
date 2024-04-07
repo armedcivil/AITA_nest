@@ -5,6 +5,7 @@ import { AddReferenceUserToCompany1710176165432 } from './1710176165432-AddRefer
 import { AddColumnIconImagePathOnUser1710882512966 } from './1710882512966-AddColumnIconImagePathOnUser';
 import { CreateFloorTable1712116401485 } from './1712116401485-CreateFloorTable';
 import { AddReferenceFloorToCompany1712117147199 } from './1712117147199-AddReferenceFloorToCompany';
+import { CreateEditorAssetsTable1712219021284 } from './1712219021284-CreateEditorAssetsTable';
 
 export const migrations = [
   CreateAdminTable1710084856273,
@@ -14,4 +15,5 @@ export const migrations = [
   AddColumnIconImagePathOnUser1710882512966,
   CreateFloorTable1712116401485,
   AddReferenceFloorToCompany1712117147199,
+  CreateEditorAssetsTable1712219021284,
 ];

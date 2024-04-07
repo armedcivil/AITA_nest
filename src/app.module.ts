@@ -14,19 +14,25 @@ import { UserProfileModule } from './user-profile/user-profile.module';
 import { CompanyFloorController } from './company-floor/company-floor.controller';
 import { FloorService } from './floor/floor.service';
 import { CompanyFloorModule } from './company-floor/company-floor.module';
+import { EditorAssetModule } from './editor-asset/editor-asset.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
     AdminModule,
     AuthModule,
+    CompanyFloorModule,
+    EditorAssetModule,
     CompanyProfileModule,
     CompanyModule,
     UserProfileModule,
     UserModule,
-    CompanyFloorModule,
   ],
   controllers: [AppController, CompanyFloorController],
-  providers: [AppService, { provide: APP_GUARD, useClass: AuthGuard }, FloorService],
+  providers: [
+    AppService,
+    { provide: APP_GUARD, useClass: AuthGuard },
+    FloorService,
+  ],
 })
 export class AppModule {}
