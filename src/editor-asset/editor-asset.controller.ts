@@ -5,6 +5,7 @@ import {
   Post,
   Patch,
   Delete,
+  Query,
   Body,
   UnauthorizedException,
   UploadedFile,
@@ -31,13 +32,17 @@ export class EditorAssetController {
   @Get()
   @Auth()
   @Role(['company'])
-  async fetchAll(@Req() req: Request) {
+  async fetchAll(
+    @Req() req: Request,
+    @Query('page') page: string,
+    @Query('order') order: 'asc' | 'desc' = 'asc',
+  ) {
     try {
       const token: string = await this.authService.extractTokenFromHeader(
         req.headers.authorization,
       );
       const payload: JwtPayload = await this.authService.checkAuth(token);
-      return await this.editorAssetService.findAll(payload.id);
+      return await this.editorAssetService.findAll(payload.id, page, order);
     } catch (e) {
       throw new UnauthorizedException();
     }
