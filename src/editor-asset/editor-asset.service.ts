@@ -69,9 +69,8 @@ export class EditorAssetService {
     asset.isChair = isChair;
 
     const company = await Company.findOne({ where: { id: companyId } });
-    company.editorAssets.push(asset);
-    await company.save();
-    return asset;
+    asset.company = company;
+    return asset.save();
   }
 
   async update(

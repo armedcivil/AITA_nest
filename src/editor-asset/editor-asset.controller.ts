@@ -8,6 +8,7 @@ import {
   Body,
   UnauthorizedException,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Auth } from 'src/auth/auth.decorator';
 import { Role } from 'src/role/role.decorator';
@@ -18,6 +19,7 @@ import { JwtPayload } from 'src/auth/auth.service';
 import { EditorAssetCreate } from './editor-asset-create.dto';
 import { join } from 'path';
 import { createWriteStream } from 'fs';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('company/editor-asset')
 export class EditorAssetController {
@@ -44,6 +46,7 @@ export class EditorAssetController {
   @Post()
   @Auth()
   @Role(['company'])
+  @UseInterceptors(FileInterceptor('asset'))
   async create(
     @Req() req: Request,
     @UploadedFile() file,
@@ -63,6 +66,7 @@ export class EditorAssetController {
           'models',
           `model_${payload.id}_${fileIdentifier}.glb`,
         );
+
         const writeStream = createWriteStream(
           join(__dirname, '..', '..', '..', 'public', assetPath),
         );
@@ -79,15 +83,17 @@ export class EditorAssetController {
       const thumbnailWriteStream = createWriteStream(
         join(__dirname, '..', '..', '..', 'public', thumbnailPath),
       );
-
-      thumbnailWriteStream.write(dto.thumbnailBlob);
+      const arrayBuffer = await fetch(dto.thumbnail)
+        .then((response) => response.blob())
+        .then((blob) => blob.arrayBuffer());
+      thumbnailWriteStream.write(Buffer.from(arrayBuffer));
       thumbnailWriteStream.close();
 
       return await this.editorAssetService.create(
         payload.id,
         assetPath,
         thumbnailPath,
-        dto.isChair,
+        dto.isChair ? true : false,
       );
     } catch (e) {
       throw new UnauthorizedException();
