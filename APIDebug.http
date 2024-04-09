@@ -1,5 +1,5 @@
 @adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwODAzMjcxLCJleHAiOjE3MTA4MTA0NzF9.jAO-sHCRk2kkKnmU51kdgOSC19CRGs8stYflXY7OVpQ
-@companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6ImNvbXBhbnk0IiwiZW1haWwiOiJjb21wYW55NEBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEyNTg2MDE5LCJleHAiOjE3MTI1OTMyMTl9.hPAsjbPUqwobFCzi6kpoVI3PjSy0GIhLB93gACcLrzc
+@companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6ImNvbXBhbnk0IiwiZW1haWwiOiJjb21wYW55NEBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEyNjQ4MzM3LCJleHAiOjE3MTI2NTU1Mzd9.lS0D-vkj2BR3lf0JgJYr2hOx_1r56BYxJT1Gjt__bXE
 @userAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxdXNlcjEiLCJlbWFpbCI6ImNvbXBhbnkxdXNlcjFAZXhhbXBsZS5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMDI2MTQxOCwiZXhwIjoxNzEwMjY4NjE4fQ.RQacTi7_w-9oV7X-jkcpshZzBrmeKZgpOwGO7_gqXAc
 
 ###
@@ -153,5 +153,10 @@ Authorization: Bearer {{companyAccessToken}}
 
 ###
 
-GET http://localhost:3001/company/editor-asset?order=desc&page=2 HTTP/1.1
+GET http://localhost:3001/company/editor-asset?order=desc HTTP/1.1
+Authorization: Bearer {{companyAccessToken}}
+
+###
+
+DELETE http://localhost:3001/company/editor-asset/17 HTTP/1.1
 Authorization: Bearer {{companyAccessToken}}

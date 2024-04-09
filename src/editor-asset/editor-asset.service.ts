@@ -37,6 +37,15 @@ const DEFAULT_MODELS = [
 
 @Injectable()
 export class EditorAssetService {
+  async find(companyId: number, id: number): Promise<EditorAsset> {
+    const queryBuilder = EditorAsset.createQueryBuilder()
+      .select()
+      .where({ company: { id: companyId } })
+      .andWhere({ id });
+
+    return queryBuilder.getOne();
+  }
+
   async findAll(
     companyId: number,
     page?: string,

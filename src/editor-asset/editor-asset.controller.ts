@@ -10,6 +10,8 @@ import {
   UnauthorizedException,
   UploadedFile,
   UseInterceptors,
+  Param,
+  ForbiddenException,
 } from '@nestjs/common';
 import { Auth } from 'src/auth/auth.decorator';
 import { Role } from 'src/role/role.decorator';
@@ -19,8 +21,9 @@ import { EditorAssetService } from './editor-asset.service';
 import { JwtPayload } from 'src/auth/auth.service';
 import { EditorAssetCreate } from './editor-asset-create.dto';
 import { join } from 'path';
-import { createWriteStream } from 'fs';
+import { createWriteStream, rmSync } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { resourceUsage } from 'process';
 
 @Controller('company/editor-asset')
 export class EditorAssetController {
@@ -102,6 +105,45 @@ export class EditorAssetController {
       );
     } catch (e) {
       throw new UnauthorizedException();
+    }
+  }
+
+  @Delete('/:id')
+  @Auth()
+  @Role(['company'])
+  async delete(@Req() req: Request, @Param('id') id) {
+    const token: string = await this.authService.extractTokenFromHeader(
+      req.headers.authorization,
+    );
+
+    let payload: JwtPayload = undefined;
+    try {
+      payload = await this.authService.checkAuth(token);
+    } catch (e) {
+      throw new UnauthorizedException();
+    }
+
+    if (payload) {
+      const willDeleteEditorAsset = await this.editorAssetService.find(
+        payload.id,
+        Number(id),
+      );
+
+      if (willDeleteEditorAsset) {
+        const base = join(__dirname, '..', '..', '..', 'public');
+        rmSync(join(base, willDeleteEditorAsset.assetPath));
+        rmSync(join(base, willDeleteEditorAsset.thumbnailPath));
+        const result = await this.editorAssetService.delete(
+          willDeleteEditorAsset.id,
+        );
+        if (result.affected) {
+          return { result: 'success' };
+        } else {
+          return { result: 'failure' };
+        }
+      } else {
+        throw new ForbiddenException();
+      }
     }
   }
 }
