@@ -23,6 +23,9 @@ export default class EditorAsset extends BaseEntity {
   @Column({ name: 'thumbnail_path' })
   thumbnailPath: string;
 
+  @Column({ name: 'top_image_path' })
+  topImagePath: string;
+
   @Column({ name: 'is_chair' })
   isChair: boolean;
 }

@@ -5,5 +5,8 @@ export class EditorAssetCreate {
   thumbnail: string;
 
   @IsNotEmpty()
+  topImage: string;
+
+  @IsNotEmpty()
   isChair: boolean;
 }

@@ -29,6 +29,10 @@ export class CreateEditorAssetsTable1712219021284
             type: 'varchar(255)',
           },
           {
+            name: 'top_image_path',
+            type: 'varchar(255)',
+          },
+          {
             name: 'company_id',
             type: 'bigint',
           },

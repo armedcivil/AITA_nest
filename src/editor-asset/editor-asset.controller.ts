@@ -97,10 +97,26 @@ export class EditorAssetController {
       thumbnailWriteStream.write(Buffer.from(arrayBuffer));
       thumbnailWriteStream.close();
 
+      const topImagePath = join(
+        'uploaded',
+        'models',
+        `top_${payload.id}_${fileIdentifier}.png`,
+      );
+
+      const topImageWriteStream = createWriteStream(
+        join(__dirname, '..', '..', '..', 'public', topImagePath),
+      );
+      const topImageArrayBuffer = await fetch(dto.topImage)
+        .then((response) => response.blob())
+        .then((blob) => blob.arrayBuffer());
+      topImageWriteStream.write(Buffer.from(topImageArrayBuffer));
+      topImageWriteStream.close();
+
       return await this.editorAssetService.create(
         payload.id,
         assetPath,
         thumbnailPath,
+        topImagePath,
         dto.isChair ? true : false,
       );
     } catch (e) {
@@ -133,6 +149,7 @@ export class EditorAssetController {
         const base = join(__dirname, '..', '..', '..', 'public');
         rmSync(join(base, willDeleteEditorAsset.assetPath));
         rmSync(join(base, willDeleteEditorAsset.thumbnailPath));
+        rmSync(join(base, willDeleteEditorAsset.topImagePath));
         const result = await this.editorAssetService.delete(
           willDeleteEditorAsset.id,
         );

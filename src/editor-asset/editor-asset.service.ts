@@ -9,6 +9,7 @@ const DEFAULT_MODELS = [
     id: 0,
     assetPath: 'models/chair.glb',
     thumbnailPath: 'models/thumbnail-chair.png',
+    topImagePath: 'models/top-chair.png',
     isChair: true,
     isDefault: true,
   },
@@ -16,6 +17,7 @@ const DEFAULT_MODELS = [
     id: 0,
     assetPath: 'models/circle-desk.glb',
     thumbnailPath: 'models/thumbnail-circle-desk.png',
+    topImagePath: 'models/top-circle-desk.png',
     isChair: false,
     isDefault: true,
   },
@@ -23,6 +25,7 @@ const DEFAULT_MODELS = [
     id: 0,
     assetPath: 'models/square-desk.glb',
     thumbnailPath: 'models/thumbnail-square-desk.png',
+    topImagePath: 'models/top-square-desk.png',
     isChair: false,
     isDefault: true,
   },
@@ -30,6 +33,7 @@ const DEFAULT_MODELS = [
     id: 0,
     assetPath: 'models/scaled-square-desk.glb',
     thumbnailPath: 'models/thumbnail-scaled-square-desk.png',
+    topImagePath: 'models/top-scaled-square-desk.png',
     isChair: false,
     isDefault: true,
   },
@@ -113,32 +117,18 @@ export class EditorAssetService {
     companyId: number,
     assetPath: string,
     thumbnailPath: string,
+    topImagePath: string,
     isChair: boolean,
   ): Promise<EditorAsset> {
     const asset = new EditorAsset();
     asset.assetPath = assetPath;
     asset.thumbnailPath = thumbnailPath;
+    asset.topImagePath = topImagePath;
     asset.isChair = isChair;
 
     const company = await Company.findOne({ where: { id: companyId } });
     asset.company = company;
     return asset.save();
-  }
-
-  async update(
-    id: number,
-    assetPath: string,
-    thumbnailPath: string,
-  ): Promise<EditorAsset> {
-    const asset = await EditorAsset.findOne({ where: { id } });
-    if (assetPath) {
-      asset.assetPath = assetPath;
-    }
-    if (thumbnailPath) {
-      asset.thumbnailPath = thumbnailPath;
-    }
-
-    return await asset.save();
   }
 
   async delete(id: number) {
