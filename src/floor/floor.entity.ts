@@ -19,4 +19,7 @@ export class Floor extends BaseEntity {
 
   @Column()
   floor: string;
+
+  @Column({ name: 'viewer_key' })
+  viewerKey: string;
 }

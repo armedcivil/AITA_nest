@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Body } from '@nestjs/common';
+import { Controller, Get, Post, Req, Body, Query, Param } from '@nestjs/common';
 import { Request } from 'express';
 import { Auth } from 'src/auth/auth.decorator';
 import { AuthService } from 'src/auth/auth.service';
@@ -28,6 +28,11 @@ export class CompanyFloorController {
     } catch (e) {
       throw new UnauthorizedException();
     }
+  }
+
+  @Get('/:viewerKey')
+  async findByViewerKey(@Param('viewerKey') viewerKey) {
+    return await this.floorService.find(null, viewerKey);
   }
 
   @Post()
