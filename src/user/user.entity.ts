@@ -1,6 +1,7 @@
 import { Company } from '../company/company.entity';
 import { Account } from '../account.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Reservation } from 'src/reservation/reservation.entity';
 
 @Entity('users')
 export class User extends Account {
@@ -10,4 +11,9 @@ export class User extends Account {
 
   @Column({ name: 'icon_image_path' })
   iconImagePath: string;
+
+  @OneToOne(() => Reservation, (reservation) => reservation.user, {
+    cascade: true,
+  })
+  reservations: Reservation;
 }
