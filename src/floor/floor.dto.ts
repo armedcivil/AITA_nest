@@ -10,4 +10,5 @@ type FloorData = {
 
 export class FloorDto {
   floors: FloorData[];
+  viewerKey: string;
 }

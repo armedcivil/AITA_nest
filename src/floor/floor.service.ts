@@ -19,7 +19,9 @@ export class FloorService {
     const result = await query.getOne();
 
     if (result) {
-      return JSON.parse(result.floor);
+      const response = JSON.parse(result.floor);
+      response.viewerKey = result.viewerKey;
+      return response;
     }
 
     return new FloorDto();
@@ -46,8 +48,12 @@ export class FloorService {
       upsertData.viewerKey = floor.viewerKey;
     }
 
-    return await Floor.upsert([upsertData], {
+    await Floor.upsert([upsertData], {
       conflictPaths: { company: true },
+    });
+
+    return await Floor.findOne({
+      where: { company: { id: companyId } },
     });
   }
 }

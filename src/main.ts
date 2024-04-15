@@ -15,7 +15,7 @@ async function bootstrap() {
     },
   });
   app.enableCors({
-    origin: ['http://localhost:4200', 'http://localhost:4201'],
+    origin: ['http://localhost:4200', 'http://localhost:4201', 'http://localhost:17000'],
   });
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   await app.listen(process.env.APP_PORT);
