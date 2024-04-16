@@ -13,5 +13,5 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: migrations,
   synchronize: false,
-  logging: false,
+  logging: true,
 };

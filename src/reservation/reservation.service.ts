@@ -1,5 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Reservation } from './reservation.entity';
+import { User } from 'src/user/user.entity';
+import { ReservationDto } from './reservation.dto';
+import { Brackets } from 'typeorm';
 
 @Injectable()
 export class ReservationService {
@@ -15,5 +18,36 @@ export class ReservationService {
     }
 
     return { reservations: await query.getMany() };
+  }
+
+  async create(userId: number, dto: ReservationDto) {
+    // Check already reserved
+    const reserved = await Reservation.createQueryBuilder()
+      .select()
+      .where({ sheetId: dto.sheetId })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('start_timestamp < :endTimestamp', {
+            endTimestamp: dto.endTimestamp,
+          }).andWhere('end_timestamp > :startTimestamp', {
+            startTimestamp: dto.startTimestamp,
+          });
+        }),
+      )
+      .getOne();
+
+    if (reserved) {
+      throw new BadRequestException('Already reserved');
+    }
+
+    const reservation = new Reservation();
+    reservation.sheetId = dto.sheetId;
+    reservation.startTimestamp = new Date(dto.startTimestamp);
+    reservation.endTimestamp = new Date(dto.endTimestamp);
+
+    const user = await User.findOne({ where: { id: userId } });
+    reservation.user = user;
+
+    return await reservation.save();
   }
 }

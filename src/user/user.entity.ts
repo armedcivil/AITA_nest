@@ -1,7 +1,7 @@
 import { Company } from '../company/company.entity';
 import { Account } from '../account.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { Reservation } from 'src/reservation/reservation.entity';
+import { Reservation } from '../reservation/reservation.entity';
 
 @Entity('users')
 export class User extends Account {
