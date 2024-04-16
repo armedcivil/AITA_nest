@@ -1,6 +1,6 @@
 @adminAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImhzZWlubyIsImVtYWlsIjoiaHNlaW5vQGFybWVkY2l2aWwuY29tIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNzEwODAzMjcxLCJleHAiOjE3MTA4MTA0NzF9.jAO-sHCRk2kkKnmU51kdgOSC19CRGs8stYflXY7OVpQ
 @companyAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibmFtZSI6ImNvbXBhbnk0IiwiZW1haWwiOiJjb21wYW55NEBleGFtcGxlLmNvbSIsInJvbGVzIjpbImNvbXBhbnkiXSwiaWF0IjoxNzEzMTQ3MzE4LCJleHAiOjE3MTMxNTQ1MTh9.72SbBazq2HmcfVAel4fZrTQmXi1kHm-n6Z3ieuLS9Ls
-@userAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6ImNvbXBhbnkxdXNlcjIiLCJlbWFpbCI6ImNvbXBhbnkxdXNlcjJAZXhhbXBsZS5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMzMwMDc5MSwiZXhwIjoxNzEzMzA3OTkxfQ.WNDxIaBbElsfkxYLqCsZOq-Xw93yZQvrJsELoMt9xWg
+@userAccessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImNvbXBhbnkxdXNlcjEiLCJlbWFpbCI6ImNvbXBhbnkxdXNlcjFAZXhhbXBsZS5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTcxMzMwMzA2MiwiZXhwIjoxNzEzMzEwMjYyfQ.D0q4HaD-Igz-DpZF_QZ-cMp_jeaeXyrL2jjYM7P7eeI
 
 ###
 
@@ -192,3 +192,9 @@ Authorization: Bearer {{userAccessToken}}
   "startTimestamp" : "2024-04-16 18:55:00",
   "endTimestamp" : "2024-04-16 19:50:00"
 }
+
+###
+
+DELETE http://localhost:3001/reservation/1
+Content-Type: application/json
+Authorization: Bearer {{userAccessToken}}

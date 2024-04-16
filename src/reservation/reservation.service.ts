@@ -89,4 +89,18 @@ export class ReservationService {
 
     return await reservation.save();
   }
+
+  async delete(userId: number, reservationId: number) {
+    const reservation = await Reservation.createQueryBuilder()
+      .select()
+      .where({ user: { id: userId } })
+      .andWhere('id = :reservationId', { reservationId })
+      .getOne();
+
+    if (!reservation) {
+      throw new BadRequestException();
+    }
+
+    return await reservation.remove();
+  }
 }

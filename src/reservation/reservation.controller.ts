@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Patch,
+  Delete,
   Req,
   Query,
   Body,
@@ -68,6 +69,23 @@ export class ReservationController {
         Number(reservationId),
         dto,
       );
+    } catch (e: any) {
+      throw new UnauthorizedException();
+    }
+  }
+
+  @Delete('/:id')
+  @Auth()
+  @Role(['user'])
+  async delete(@Req() req: Request, @Param('id') reservationId: string) {
+    try {
+      const token: string = this.authService.extractTokenFromHeader(
+        req.headers.authorization,
+      );
+
+      const payload: JwtPayload = this.authService.checkAuth(token);
+
+      return this.reservationService.delete(payload.id, Number(reservationId));
     } catch (e: any) {
       throw new UnauthorizedException();
     }
