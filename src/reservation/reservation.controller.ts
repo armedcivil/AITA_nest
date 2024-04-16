@@ -2,9 +2,11 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Req,
   Query,
   Body,
+  Param,
   UnauthorizedException,
   UseInterceptors,
   ClassSerializerInterceptor,
@@ -17,6 +19,7 @@ import { ReservationDto } from './reservation.dto';
 import { AuthService, JwtPayload } from 'src/auth/auth.service';
 
 @Controller('reservation')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ReservationController {
   constructor(
     private reservationService: ReservationService,
@@ -24,7 +27,6 @@ export class ReservationController {
   ) {}
 
   @Get()
-  @UseInterceptors(ClassSerializerInterceptor)
   async findAll(@Query('sheet_id') sheetId) {
     return this.reservationService.find(sheetId, new Date());
   }
@@ -32,7 +34,6 @@ export class ReservationController {
   @Post()
   @Auth()
   @Role(['user'])
-  @UseInterceptors(ClassSerializerInterceptor)
   async create(@Req() req: Request, @Body() dto: ReservationDto) {
     try {
       const token: string = this.authService.extractTokenFromHeader(
@@ -42,6 +43,31 @@ export class ReservationController {
       const payload: JwtPayload = this.authService.checkAuth(token);
 
       return this.reservationService.create(payload.id, dto);
+    } catch (e: any) {
+      throw new UnauthorizedException();
+    }
+  }
+
+  @Patch('/:id')
+  @Auth()
+  @Role(['user'])
+  async update(
+    @Req() req: Request,
+    @Param('id') reservationId: string,
+    @Body() dto: ReservationDto,
+  ) {
+    try {
+      const token: string = this.authService.extractTokenFromHeader(
+        req.headers.authorization,
+      );
+
+      const payload: JwtPayload = this.authService.checkAuth(token);
+
+      return this.reservationService.update(
+        payload.id,
+        Number(reservationId),
+        dto,
+      );
     } catch (e: any) {
       throw new UnauthorizedException();
     }
