@@ -7,8 +7,9 @@ import { Brackets, NotBrackets } from 'typeorm';
 @Injectable()
 export class ReservationService {
   async find(sheetId: string, currentTimestamp: Date, limit?: number) {
-    const query = Reservation.createQueryBuilder()
+    const query = Reservation.createQueryBuilder('reservation')
       .select()
+      .leftJoinAndSelect('reservation.user', 'user')
       .where({ sheetId })
       .andWhere('end_timestamp > :currentTimestamp', { currentTimestamp })
       .orderBy('start_timestamp');
