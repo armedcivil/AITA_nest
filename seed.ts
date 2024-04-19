@@ -18,21 +18,24 @@ import { User } from './src/user/user.entity';
   admin.password = await hash('adminadmin', 10);
   await adminRepository.save(admin);
 
-  const compnayRepogitory = dataSource.getRepository(Company);
-  for (let i = 0; i < 40; i++) {
+  const companyRepogitory = dataSource.getRepository(Company);
+  for (let i = 0; i < 10; i++) {
     const company = new Company();
     company.name = `company${i + 1}`;
     company.email = `company${i + 1}@example.com`;
     company.password = await hash('password', 10);
     company.users = [];
-    for (let n = 0; n < 40; n++) {
+    for (let n = 0; n < 10; n++) {
       const user = new User();
       user.name = `company${i + 1}user${n + 1}`;
       user.email = `company${i + 1}user${n + 1}@example.com`;
       user.password = await hash('password', 10);
       company.users.push(user);
     }
-    await compnayRepogitory.save(company);
+    await companyRepogitory.save(company);
+    await new Promise((resolve, reject) => {
+      setTimeout(resolve, 2000);
+    });
   }
 
   process.exit();

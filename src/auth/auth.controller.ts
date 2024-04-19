@@ -13,32 +13,25 @@ export class AuthController {
 
   @Post('/admin/login')
   async adminLogin(@Body() authDto: AuthDto) {
-    return await this.authService.signIn(
-      authDto.email,
-      authDto.password,
-      Admin,
-      ['admin'],
-    );
+    return await this.authService.signInAdmin(authDto.email, authDto.password, [
+      'admin',
+    ]);
   }
 
   @Post('/company/login')
   async companyLogin(@Body() authDto: AuthDto) {
-    return await this.authService.signIn(
+    return await this.authService.signInCompany(
       authDto.email,
       authDto.password,
-      Company,
       ['company'],
     );
   }
 
   @Post('/user/login')
   async userLogin(@Body() authDto: AuthDto) {
-    return await this.authService.signIn(
-      authDto.email,
-      authDto.password,
-      User,
-      ['user'],
-    );
+    return await this.authService.signInUser(authDto.email, authDto.password, [
+      'user',
+    ]);
   }
 
   @Get('/check')

@@ -1,9 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { EntityTarget, DataSource } from 'typeorm';
+import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { compare } from 'bcrypt';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Account } from 'src/account.entity';
 import { Request } from 'express';
+import { Admin } from 'src/admin/admin.entity';
+import { Company } from 'src/company/company.entity';
+import { User } from 'src/user/user.entity';
 
 export type JwtPayload = {
   id: number;
@@ -19,16 +22,35 @@ export class AuthService {
     private dataSource: DataSource,
   ) {}
 
-  async signIn<T extends Account>(
+  async signInAdmin(email: string, password: string, roles: string[]) {
+    return await this.signIn(
+      email,
+      password,
+      roles,
+      Admin.createQueryBuilder(),
+    );
+  }
+
+  async signInCompany(email: string, password: string, roles: string[]) {
+    return await this.signIn(
+      email,
+      password,
+      roles,
+      Company.createQueryBuilder(),
+    );
+  }
+
+  async signInUser(email: string, password: string, roles: string[]) {
+    return await this.signIn(email, password, roles, User.createQueryBuilder());
+  }
+
+  private async signIn<T extends Account>(
     email: string,
     password: string,
-    entityType: EntityTarget<T>,
     roles: string[],
+    queryBuilder: SelectQueryBuilder<T>,
   ): Promise<{ accessToken: string }> {
-    const queryBuider = this.dataSource
-      .getRepository(entityType)
-      .createQueryBuilder();
-    const account: T = await queryBuider
+    const account: T = await queryBuilder
       .select()
       .where({ email: email })
       .getOne();

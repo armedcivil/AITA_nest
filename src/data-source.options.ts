@@ -14,4 +14,5 @@ export const dataSourceOptions: DataSourceOptions = {
   migrations: migrations,
   synchronize: false,
   logging: true,
+  cache: false,
 };
