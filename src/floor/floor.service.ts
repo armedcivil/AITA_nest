@@ -2,12 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { FloorDto } from './floor.dto';
 import { Floor } from './floor.entity';
 import { randomBytes } from 'crypto';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class FloorService {
   constructor() {}
 
-  async find(companyId?: number, viewerKey?: string): Promise<FloorDto> {
+  async find(
+    companyId?: number,
+    userId?: number,
+    viewerKey?: string,
+  ): Promise<FloorDto> {
+    if (!companyId && userId) {
+      const user = await User.findOne({
+        where: { id: userId },
+        relations: { company: true },
+      });
+      companyId = user.company.id;
+    }
+
     const queryBuilder = Floor.createQueryBuilder().select();
     let query = queryBuilder;
     if (companyId) {

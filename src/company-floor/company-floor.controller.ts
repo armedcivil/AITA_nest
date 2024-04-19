@@ -17,14 +17,19 @@ export class CompanyFloorController {
 
   @Get()
   @Auth()
-  @Role(['company'])
+  @Role(['company', 'user'])
   async find(@Req() req: Request) {
     try {
       const token: string = await this.authService.extractTokenFromHeader(
         req.headers.authorization,
       );
       const payload: JwtPayload = await this.authService.checkAuth(token);
-      return await this.floorService.find(payload.id);
+
+      if (payload.roles.includes('company')) {
+        return await this.floorService.find(payload.id);
+      } else if (payload.roles.includes('user')) {
+        return await this.floorService.find(null, payload.id);
+      }
     } catch (e) {
       throw new UnauthorizedException();
     }
@@ -32,7 +37,7 @@ export class CompanyFloorController {
 
   @Get('/:viewerKey')
   async findByViewerKey(@Param('viewerKey') viewerKey) {
-    return await this.floorService.find(null, viewerKey);
+    return await this.floorService.find(null, null, viewerKey);
   }
 
   @Post()
