@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import EditorAsset from './editor-asset.entity';
 import { Company } from 'src/company/company.entity';
+import { basename } from 'path';
+import { Like } from 'typeorm';
 
 const COUNT_PER_PAGE = 10;
 
@@ -48,6 +50,27 @@ export class EditorAssetService {
       .andWhere({ id });
 
     return queryBuilder.getOne();
+  }
+
+  async findByAssetPath(assetPath: string): Promise<{
+    id: number;
+    assetPath: string;
+    thumbnailPath: string;
+    topImagePath: string;
+    isChair: boolean;
+    isDefault: boolean;
+  }> {
+    var fileName = basename(assetPath);
+    const editorAsset = await EditorAsset.findOne({
+      where: { assetPath: Like(`%${fileName}`) },
+    });
+    if (editorAsset) {
+      return { ...editorAsset, isDefault: false };
+    }
+
+    if (!editorAsset) {
+      return DEFAULT_MODELS.find((model) => model.assetPath.includes(fileName));
+    }
   }
 
   async findAll(

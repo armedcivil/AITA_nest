@@ -3,10 +3,11 @@ import { FloorDto } from './floor.dto';
 import { Floor } from './floor.entity';
 import { randomBytes } from 'crypto';
 import { User } from 'src/user/user.entity';
+import { EditorAssetService } from 'src/editor-asset/editor-asset.service';
 
 @Injectable()
 export class FloorService {
-  constructor() {}
+  constructor(private editorAssetService: EditorAssetService) {}
 
   async find(
     companyId?: number,
@@ -33,6 +34,20 @@ export class FloorService {
 
     if (result) {
       const response = JSON.parse(result.floor);
+      response.floors = await Promise.all(
+        response.floors.map(async (floor) => {
+          const objects = await Promise.all(
+            floor.objects.map(async (object) => {
+              const editorAsset = await this.editorAssetService.findByAssetPath(
+                object.modelPath,
+              );
+              object.topImagePath = editorAsset.topImagePath;
+              return object;
+            }),
+          );
+          return { ...floor, objects };
+        }),
+      );
       response.viewerKey = result.viewerKey;
       return response;
     }

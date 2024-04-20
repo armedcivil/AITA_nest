@@ -8,6 +8,7 @@ import { AddReferenceFloorToCompany1712117147199 } from './1712117147199-AddRefe
 import { CreateEditorAssetsTable1712219021284 } from './1712219021284-CreateEditorAssetsTable';
 import { AddViewerKeyOnFloorsTable1712975694146 } from './1712975694146-AddViewerKeyOnFloorsTable';
 import { CreateReservationsTable1713204939011 } from './1713204939011-CreateReservationsTable';
+import { AddAssetPathIndexToEditorAssetsTable1713577297190 } from './1713577297190-AddAssetPathIndexToEditorAssetsTable';
 
 export const migrations = [
   CreateAdminTable1710084856273,
@@ -20,4 +21,5 @@ export const migrations = [
   CreateEditorAssetsTable1712219021284,
   AddViewerKeyOnFloorsTable1712975694146,
   CreateReservationsTable1713204939011,
+  AddAssetPathIndexToEditorAssetsTable1713577297190,
 ];

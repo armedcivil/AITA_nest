@@ -1,6 +1,7 @@
 type SceneObject = {
   modelPath: string;
   matrix: number[];
+  topImagePath?: string;
 };
 
 type FloorData = {

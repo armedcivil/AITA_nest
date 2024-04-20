@@ -7,5 +7,6 @@ import { AuthModule } from 'src/auth/auth.module';
   imports: [AuthModule],
   providers: [EditorAssetService],
   controllers: [EditorAssetController],
+  exports: [EditorAssetService],
 })
 export class EditorAssetModule {}

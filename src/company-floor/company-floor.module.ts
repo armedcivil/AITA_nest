@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CompanyFloorController } from './company-floor.controller';
 import { AuthModule } from 'src/auth/auth.module';
-import { FloorService } from 'src/floor/floor.service';
+import { FloorModule } from 'src/floor/floor.module';
 
 @Module({
   controllers: [CompanyFloorController],
-  imports: [AuthModule],
-  providers: [FloorService],
+  imports: [AuthModule, FloorModule],
 })
 export class CompanyFloorModule {}

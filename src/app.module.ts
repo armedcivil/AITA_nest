@@ -16,6 +16,7 @@ import { FloorService } from './floor/floor.service';
 import { CompanyFloorModule } from './company-floor/company-floor.module';
 import { EditorAssetModule } from './editor-asset/editor-asset.module';
 import { ReservationModule } from './reservation/reservation.module';
+import { FloorModule } from './floor/floor.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ReservationModule } from './reservation/reservation.module';
     UserProfileModule,
     UserModule,
     ReservationModule,
+    FloorModule,
   ],
   controllers: [AppController, CompanyFloorController],
   providers: [
