@@ -41,7 +41,9 @@ export class FloorService {
               const editorAsset = await this.editorAssetService.findByAssetPath(
                 object.modelPath,
               );
-              object.topImagePath = editorAsset.topImagePath;
+              if (editorAsset) {
+                object.topImagePath = editorAsset.topImagePath;
+              }
               return object;
             }),
           );
