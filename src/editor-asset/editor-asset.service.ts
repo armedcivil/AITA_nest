@@ -84,6 +84,7 @@ export class EditorAssetService {
       thumbnailPath: string;
       isChair: boolean;
       isDefault: boolean;
+      topImagePath: string;
     }[];
     pager?: {
       total: number;

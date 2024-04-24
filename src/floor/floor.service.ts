@@ -34,22 +34,20 @@ export class FloorService {
 
     if (result) {
       const response = JSON.parse(result.floor);
-      response.floors = await Promise.all(
-        response.floors.map(async (floor) => {
-          const objects = await Promise.all(
-            floor.objects.map(async (object) => {
-              const editorAsset = await this.editorAssetService.findByAssetPath(
-                object.modelPath,
-              );
-              if (editorAsset) {
-                object.topImagePath = editorAsset.topImagePath;
-              }
-              return object;
-            }),
+      const editorAssets = (await this.editorAssetService.findAll(companyId))
+        .editorAssets;
+      response.floors = response.floors.map((floor) => {
+        const objects = floor.objects.map((object) => {
+          const editorAsset = editorAssets.find((asset) =>
+            object.modelPath.endsWith(asset.assetPath),
           );
-          return { ...floor, objects };
-        }),
-      );
+          if (editorAsset) {
+            object.topImagePath = editorAsset.topImagePath;
+          }
+          return object;
+        });
+        return { ...floor, objects };
+      });
       response.viewerKey = result.viewerKey;
       return response;
     }
