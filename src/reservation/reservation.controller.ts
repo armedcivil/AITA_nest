@@ -19,6 +19,8 @@ import { Request } from 'express';
 import { ReservationDto } from './reservation.dto';
 import { AuthService, JwtPayload } from 'src/auth/auth.service';
 
+const JST_OFFSET = 9;
+
 @Controller('reservation')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ReservationController {
@@ -29,7 +31,9 @@ export class ReservationController {
 
   @Get()
   async findAll(@Query('sheet_id') sheetId) {
-    return this.reservationService.find(sheetId, new Date());
+    const current = new Date();
+    current.setHours(current.getHours() + JST_OFFSET);
+    return this.reservationService.find(sheetId, current);
   }
 
   @Post()
