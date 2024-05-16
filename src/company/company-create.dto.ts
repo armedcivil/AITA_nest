@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, MinLength, IsEmail } from 'class-validator';
 import { IsConfirmed } from 'src/validators/is-confirmed.validator';
 import { Pair } from 'src/validators/pair.validator';
 import { Unique } from 'src/validators/unique.validator';
@@ -10,6 +10,7 @@ export class CreateCompanyDto {
 
   @IsNotEmpty()
   @Unique(Company)
+  @IsEmail()
   email?: string;
 
   @IsNotEmpty()
